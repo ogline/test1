@@ -1,1 +1,463 @@
-.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIRST INFORMATION REPORT (FIR)</title>
+    <style>
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                font-size: 12px;
+            }
+            .container {
+                margin: 0;
+                padding: 15px;
+                box-shadow: none;
+            }
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.3;
+            color: #000;
+            background: #fff;
+            font-size: 13px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+        }
+        
+        .form-section {
+            margin-bottom: 10px;
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 6px;
+            align-items: flex-start;
+        }
+        
+        .form-label {
+            flex: 1;
+            font-weight: bold;
+            min-width: 150px;
+        }
+        
+        .form-value {
+            flex: 2;
+            border-bottom: 1px dotted #000;
+            padding-left: 8px;
+            min-height: 18px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        
+        th, td {
+            border: 1px solid #000;
+            padding: 4px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        .signature-area {
+            margin-top: 20px;
+            border-top: 1px solid #000;
+            padding-top: 8px;
+        }
+        
+        .officer-details {
+            margin-top: 15px;
+        }
+        
+        .bilingual {
+            display: flex;
+            margin-bottom: 3px;
+        }
+        
+        .hindi {
+            flex: 1;
+            font-family: 'Arial Unicode MS', 'Nirmala UI', sans-serif;
+        }
+        
+        .english {
+            flex: 1;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 3px;
+            font-size: 14px;
+        }
+        
+        .blank-space {
+            min-height: 16px;
+            border-bottom: 1px dotted #000;
+            margin-bottom: 6px;
+        }
+        
+        .compact-table {
+            font-size: 11px;
+        }
+        
+        .two-column {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .column {
+            flex: 1;
+        }
+        
+        .offence-description {
+            border: 1px solid #000;
+            padding: 8px;
+            margin: 10px 0;
+            min-height: 200px;
+            font-family: 'Arial Unicode MS', 'Nirmala UI', sans-serif;
+            line-height: 1.5;
+        }
+        
+        .complainant-details {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="bilingual">
+                <div class="hindi">एन.सी.आर.बी (राष्ट्रीय अपराध रिकार्ड ब्यूरो)</div>
+                <div class="english">N.C.R.B (National Crime Records Bureau)</div>
+            </div>
+            <div class="bilingual">
+                <div class="hindi">एल.एल.एफ.-1 (प्रथम सूचना रिपोर्ट फॉर्म)</div>
+                <div class="english">LLF-1 (First Information Report Form)</div>
+            </div>
+            <h2 style="margin: 8px 0;">FIRST INFORMATION REPORT</h2>
+            <div class="bilingual">
+                <div class="hindi">(धारा 154 दंड प्रक्रिया संहिता के अंतर्गत)</div>
+                <div class="english">(Under Section 154 Cr.P.C.)</div>
+            </div>
+        </div>
+
+        <!-- Police Station Details -->
+        <div class="form-section">
+            <div class="section-title">1. पुलिस स्टेशन विवरण (Police Station Details)</div>
+            <div class="two-column">
+                <div class="column">
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">जिला (District):</span>
+                            <span class="english">District:</span>
+                        </div>
+                        <div class="form-value">Khuldabad</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">थाना (Police Station):</span>
+                            <span class="english">Police Station:</span>
+                        </div>
+                        <div class="form-value">Gulab Badi</div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">वर्ष (Year):</span>
+                            <span class="english">Year:</span>
+                        </div>
+                        <div class="form-value">2025</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">एफ.आई.आर. नंबर (FIR No.):</span>
+                            <span class="english">FIR No.:</span>
+                        </div>
+                        <div class="form-value">0097</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accused and Sections -->
+        <div class="two-column">
+            <div class="column">
+                <div class="form-section">
+                    <div class="section-title">2. अभियुक्त विवरण (Accused Details)</div>
+                    <table class="compact-table">
+                        <tr>
+                            <th class="bilingual">
+                                <span class="hindi">क्रम सं.</span>
+                                <span class="english">S.No.</span>
+                            </th>
+                            <th class="bilingual">
+                                <span class="hindi">नाम व पता</span>
+                                <span class="english">Name & Address</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>शाएका बेगम पुत्री कश्मीरुल हक, 203 अटाला, थाना खुल्दाबाद</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>शफीका बेगम पत्नी कश्मीरुल हक, 203 अटाला, खुल्दाबाद</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>इनामुल हक उर्फ शेबू पुत्र कश्मीरुल हक, 203 अटाला, खुल्दाबाद</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>मेराज अहमद पुत्र स्वर्गी हसमतुल्लाह, अटाला, खुल्दाबाद</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>अलतमस पुत्र स्वर्गी शकील, कुली बाजार, थाना कलेक्टर गंज, जिला कानपुर</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="column">
+                <div class="form-section">
+                    <div class="section-title">लागू धाराएं (Applicable Sections)</div>
+                    <table class="compact-table">
+                        <tr>
+                            <th class="bilingual">
+                                <span class="hindi">भारतीय दंड संहिता की धाराएं</span>
+                                <span class="english">IPC Sections</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>494</td>
+                        </tr>
+                        <tr>
+                            <td>495</td>
+                        </tr>
+                        <tr>
+                            <td>496</td>
+                       tr>
+                        <tr>
+                            <td>120B</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offence Details -->
+        <div class="form-section">
+            <div class="section-title">3. अपराध का विवरण (Offence Details)</div>
+            <div class="two-column">
+                <div class="column">
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">(क) अपराध की तिथि (Date of Offence):</span>
+                            <span class="english">(a) Date of Offence:</span>
+                        </div>
+                        <div class="form-value">22/08/2025</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">समय (Time):</span>
+                            <span class="english">Time:</span>
+                        </div>
+                        <div class="form-value">Not specified</div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">(ख) सूचना प्राप्ति तिथि (Info Received Date):</span>
+                            <span class="english">(b) Info Received Date:</span>
+                        </div>
+                        <div class="form-value">11/10/2025</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">समय (Time):</span>
+                            <span class="english">Time:</span>
+                        </div>
+                        <div class="form-value">Not specified</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-label bilingual">
+                    <span class="hindi">घटना स्थल (Place of Occurrence):</span>
+                    <span class="english">Place of Occurrence:</span>
+                </div>
+                <div class="form-value">203 अटाला, थाना खुल्दाबाद / कुली बाजार, थाना कलेक्टर गंज, जिला कानपुर</div>
+            </div>
+            
+            <div class="section-title">अपराध का विवरण (Description of Offence)</div>
+            <div class="offence-description">
+                प्रार्थी का निकाह 1/1/2016 को शाएका बेगम पुत्री कश्मीरूल हक निवासी 203 अटाला थाना खुल्दाबाद के साथ हुआ था । एक पुत्र का जन्म हुआ जो पत्नी के साथ रह रहा है। दिनांक 17/9/2017 को, पत्नी लड़ाई-झगड़ा कर के अपने मायके चली गयी और दबाव बनाने के लिए प्रार्थी के खिलाफ भरण पोषण घरेलू हिंसा का मुकदमा दायर किया है। इस बीच प्राथी द्वारा पत्नी को रजिस्टर्ड डाक के माध्यम से एक-एक माह के अंतराल में तलाक दे दिया है।
+                जिससे न्यायालय द्वारा डिग्री प्राप्त करने के बाद पत्नी न्यायालय में प्रस्तुत इस तलाक को नहीं मानती है। उसका कोई तलाक नहीं हुआ हैं। तलाक न होने के आधार पर न्यायालय द्वारा प्रार्थिनी द्वारा दिये गये तलाक के डिग्री को रीकॉल प्रपत्र कर दिया है, जिसमें पत्नी द्वारा जवाब दाखिल कर तलाकनामें से इन्कार कर दिया हैं। और प्रार्थी के साथ रहने को तैयार है। इस बीच मुकदमा के दौरा‌न पत्नी ने बगैर किसी तलाक के दिनांक - 22/8/2025 को अलतमस पुत्र स्वर्गी शकील निवासी जिला कानपुर के साथ निकाह कर लिया है जो एक अपराधिक व्यक्ति है। मेरी पत्नी का परिवार और अलतमस के परिवार वाले इस में सम्मिलित है।
+                अतः श्रीमान जी से निवेदन है कि प्रार्थी के बगैर किसी तलाक के दिनांक-22/8/2025 को निकाह करने के सम्बंध में निकाह में शरीक शाएका बेगम पुत्री कश्मीरुल हक, शफीका बेगम पत्नी कश्मीरुल हक, इनामुल हक उर्फ शेबू पुत्र कश्मीरल हक निवासी 203 अटाला खुल्दाबाद प्रयागराज। मेराज़ अहमद पुत्र स्वर्गी हसमतुल्लाह अटाला निवासी खुल्दाबाद तथा अलतमस पुत्र स्वर्गी शकील व उसके परिजन निवासी कुली बाज़ार थाना कलेक्टर गंज जिला कानपुर के विरुध्द न्यायोचित धाराओं में प्रथम सूचना रिपोर्ट दर्ज कर कार्यवाही करने की कृपा करें।
+                धन्यवाद।
+            </div>
+        </div>
+
+        <!-- Complainant Details -->
+        <div class="form-section">
+            <div class="section-title">4. शिकायतकर्ता/सूचनादाता विवरण (Complainant/Informant Details)</div>
+            <div class="complainant-details">
+                <div class="two-column">
+                    <div class="column">
+                        <div class="form-row">
+                            <div class="form-label bilingual">
+                                <span class="hindi">नाम (Name):</span>
+                                <span class="english">Name:</span>
+                            </div>
+                            <div class="form-value">Mohammad Shadab</div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label bilingual">
+                                <span class="hindi">पिता का नाम (Father's Name):</span>
+                                <span class="english">Father's Name:</span>
+                            </div>
+                            <div class="form-value">Inam</div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label bilingual">
+                                <span class="hindi">जन्म तिथि (Date of Birth):</span>
+                                <span class="english">Date of Birth:</span>
+                            </div>
+                            <div class="form-value">28/07/1982</div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label bilingual">
+                                <span class="hindi">मोबाइल नंबर (Mobile Number):</span>
+                                <span class="english">Mobile Number:</span>
+                            </div>
+                            <div class="form-value">7985129710</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="form-row">
+                            <div class="form-label bilingual">
+                                <span class="hindi">यू.आई.डी. नंबर (UID No./Aadhaar):</span>
+                                <span class="english">UID No./Aadhaar:</span>
+                            </div>
+                            <div class="form-value">500955852120</div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label bilingual">
+                                <span class="hindi">पासपोर्ट नंबर (Passport No.):</span>
+                                <span class="english">Passport No.:</span>
+                            </div>
+                            <div class="form-value"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label bilingual">
+                                <span class="hindi">पता (Address):</span>
+                                <span class="english">Address:</span>
+                            </div>
+                            <div class="form-value"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label bilingual">
+                                <span class="hindi">राष्ट्रीयता (Nationality):</span>
+                                <span class="english">Nationality:</span>
+                            </div>
+                            <div class="form-value">Indian</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signatures Section -->
+        <div class="two-column">
+            <div class="column">
+                <div class="signature-area">
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">शिकायतकर्ता के हस्ताक्षर</span>
+                            <span class="english">Complainant's Signature</span>
+                        </div>
+                    </div>
+                    <div class="form-row" style="height: 50px;">
+                        <div class="form-value" style="border-bottom: 1px solid #000;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="officer-details">
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">थाना प्रभारी के हस्ताक्षर</span>
+                            <span class="english">Officer's Signature</span>
+                        </div>
+                    </div>
+                    <div class="form-row" style="height: 50px;">
+                        <div class="form-value" style="border-bottom: 1px solid #000;"></div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">नाम (Name):</span>
+                            <span class="english">Name:</span>
+                        </div>
+                        <div class="form-value">Roquent Laurét</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">पद (Rank):</span>
+                            <span class="english">Rank:</span>
+                        </div>
+                        <div class="form-value">इंस्पेक्टर (Inspector)</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label bilingual">
+                            <span class="hindi">संख्या (No.):</span>
+                            <span class="english">No.:</span>
+                        </div>
+                        <div class="form-value">010869425</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Note -->
+        <div style="text-align: center; margin-top: 15px; font-size: 11px; border-top: 1px solid #ccc; padding-top: 5px;">
+            <div class="bilingual">
+                <div class="hindi">नोट: यह फॉर्म एक ए4 पेज पर फिट होने के लिए डिज़ाइन किया गया है</div>
+                <div class="english">Note: This form is designed to fit on a single A4 page</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
