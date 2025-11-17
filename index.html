@@ -3,461 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIRST INFORMATION REPORT (FIR)</title>
+    <title>Passport Photo Printer - 5 in a Row</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-                font-size: 12px;
-            }
-            .container {
-                margin: 0;
-                padding: 15px;
-                box-shadow: none;
-            }
-        }
-        
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.3;
-            color: #000;
-            background: #fff;
-            font-size: 13px;
-        }
-        
-        .container {
             max-width: 800px;
             margin: 0 auto;
-            border: 1px solid #000;
             padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
             background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        .header {
+        h1 {
+            color: #333;
             text-align: center;
+            margin-bottom: 30px;
+        }
+        .upload-section {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: #fafafa;
+        }
+        .upload-section.drag-over {
+            border-color: #4CAF50;
+            background-color: #f0fff0;
+        }
+        #fileInput {
+            display: none;
+        }
+        .upload-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
             margin-bottom: 15px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 8px;
         }
-        
-        .form-section {
-            margin-bottom: 10px;
+        .upload-btn:hover {
+            background: #45a049;
         }
-        
-        .form-row {
+        .preview-section {
+            display: none;
+            margin-bottom: 30px;
+        }
+        .photo-grid {
             display: flex;
-            margin-bottom: 6px;
-            align-items: flex-start;
+            justify-content: center;
+            gap: 0;
+            margin: 20px 0;
+            background: white;
+            padding: 10px;
+            border: 1px solid #ddd;
         }
-        
-        .form-label {
-            flex: 1;
-            font-weight: bold;
-            min-width: 150px;
+        .photo-cell {
+            width: 3.5cm;
+            height: 4.5cm;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .form-value {
-            flex: 2;
-            border-bottom: 1px dotted #000;
-            padding-left: 8px;
-            min-height: 18px;
-        }
-        
-        table {
+        .photo-cell img {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
-            font-size: 12px;
+            height: 100%;
+            object-fit: cover;
         }
-        
-        th, td {
-            border: 1px solid #000;
-            padding: 4px;
-            text-align: left;
-            vertical-align: top;
+        .controls {
+            text-align: center;
+            margin: 20px 0;
         }
-        
-        .signature-area {
-            margin-top: 20px;
-            border-top: 1px solid #000;
-            padding-top: 8px;
+        .generate-btn {
+            background: #2196F3;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
         }
-        
-        .officer-details {
-            margin-top: 15px;
+        .generate-btn:hover {
+            background: #1976D2;
         }
-        
-        .bilingual {
-            display: flex;
-            margin-bottom: 3px;
+        .reset-btn {
+            background: #ff9800;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
         }
-        
-        .hindi {
-            flex: 1;
-            font-family: 'Arial Unicode MS', 'Nirmala UI', sans-serif;
+        .reset-btn:hover {
+            background: #f57c00;
         }
-        
-        .english {
-            flex: 1;
-            font-style: italic;
-            color: #555;
-        }
-        
-        .section-title {
-            font-weight: bold;
-            margin-top: 10px;
-            margin-bottom: 8px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 3px;
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
             font-size: 14px;
         }
-        
-        .blank-space {
-            min-height: 16px;
-            border-bottom: 1px dotted #000;
-            margin-bottom: 6px;
+        .print-tips {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 14px;
         }
-        
-        .compact-table {
-            font-size: 11px;
-        }
-        
-        .two-column {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .column {
-            flex: 1;
-        }
-        
-        .offence-description {
-            border: 1px solid #000;
-            padding: 8px;
+        .status {
+            text-align: center;
             margin: 10px 0;
-            min-height: 200px;
-            font-family: 'Arial Unicode MS', 'Nirmala UI', sans-serif;
-            line-height: 1.5;
-        }
-        
-        .complainant-details {
-            border: 1px solid #000;
-            padding: 10px;
-            margin: 10px 0;
+            font-weight: bold;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header Section -->
-        <div class="header">
-            <div class="bilingual">
-                <div class="hindi">एन.सी.आर.बी (राष्ट्रीय अपराध रिकार्ड ब्यूरो)</div>
-                <div class="english">N.C.R.B (National Crime Records Bureau)</div>
-            </div>
-            <div class="bilingual">
-                <div class="hindi">एल.एल.एफ.-1 (प्रथम सूचना रिपोर्ट फॉर्म)</div>
-                <div class="english">LLF-1 (First Information Report Form)</div>
-            </div>
-            <h2 style="margin: 8px 0;">FIRST INFORMATION REPORT</h2>
-            <div class="bilingual">
-                <div class="hindi">(धारा 154 दंड प्रक्रिया संहिता के अंतर्गत)</div>
-                <div class="english">(Under Section 154 Cr.P.C.)</div>
-            </div>
+        <h1>📷 Passport Photo Generator</h1>
+        <p style="text-align: center; color: #666;">Upload your photo to generate a PDF with 5 passport photos (3.5cm × 4.5cm) in one row</p>
+        
+        <div class="instructions">
+            <strong>Instructions:</strong>
+            <ul>
+                <li>Upload a clear, front-facing photo with a plain background</li>
+                <li>Recommended: High-quality image for best results</li>
+                <li>The generated PDF will have 5 identical photos in one row</li>
+            </ul>
         </div>
 
-        <!-- Police Station Details -->
-        <div class="form-section">
-            <div class="section-title">1. पुलिस स्टेशन विवरण (Police Station Details)</div>
-            <div class="two-column">
-                <div class="column">
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">जिला (District):</span>
-                            <span class="english">District:</span>
-                        </div>
-                        <div class="form-value">Khuldabad</div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">थाना (Police Station):</span>
-                            <span class="english">Police Station:</span>
-                        </div>
-                        <div class="form-value">Gulab Badi</div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">वर्ष (Year):</span>
-                            <span class="english">Year:</span>
-                        </div>
-                        <div class="form-value">2025</div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">एफ.आई.आर. नंबर (FIR No.):</span>
-                            <span class="english">FIR No.:</span>
-                        </div>
-                        <div class="form-value">0097</div>
-                    </div>
-                </div>
-            </div>
+        <div class="upload-section" id="uploadArea">
+            <input type="file" id="fileInput" accept="image/*">
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                📁 Upload Your Photo
+            </button>
+            <p>or drag and drop your image here</p>
         </div>
 
-        <!-- Accused and Sections -->
-        <div class="two-column">
-            <div class="column">
-                <div class="form-section">
-                    <div class="section-title">2. अभियुक्त विवरण (Accused Details)</div>
-                    <table class="compact-table">
-                        <tr>
-                            <th class="bilingual">
-                                <span class="hindi">क्रम सं.</span>
-                                <span class="english">S.No.</span>
-                            </th>
-                            <th class="bilingual">
-                                <span class="hindi">नाम व पता</span>
-                                <span class="english">Name & Address</span>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>शाएका बेगम पुत्री कश्मीरुल हक, 203 अटाला, थाना खुल्दाबाद</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>शफीका बेगम पत्नी कश्मीरुल हक, 203 अटाला, खुल्दाबाद</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>इनामुल हक उर्फ शेबू पुत्र कश्मीरुल हक, 203 अटाला, खुल्दाबाद</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>मेराज अहमद पुत्र स्वर्गी हसमतुल्लाह, अटाला, खुल्दाबाद</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>अलतमस पुत्र स्वर्गी शकील, कुली बाजार, थाना कलेक्टर गंज, जिला कानपुर</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="column">
-                <div class="form-section">
-                    <div class="section-title">लागू धाराएं (Applicable Sections)</div>
-                    <table class="compact-table">
-                        <tr>
-                            <th class="bilingual">
-                                <span class="hindi">भारतीय दंड संहिता की धाराएं</span>
-                                <span class="english">IPC Sections</span>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>494</td>
-                        </tr>
-                        <tr>
-                            <td>495</td>
-                        </tr>
-                        <tr>
-                            <td>496</td>
-                       tr>
-                        <tr>
-                            <td>120B</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Offence Details -->
-        <div class="form-section">
-            <div class="section-title">3. अपराध का विवरण (Offence Details)</div>
-            <div class="two-column">
-                <div class="column">
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">(क) अपराध की तिथि (Date of Offence):</span>
-                            <span class="english">(a) Date of Offence:</span>
-                        </div>
-                        <div class="form-value">22/08/2025</div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">समय (Time):</span>
-                            <span class="english">Time:</span>
-                        </div>
-                        <div class="form-value">Not specified</div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">(ख) सूचना प्राप्ति तिथि (Info Received Date):</span>
-                            <span class="english">(b) Info Received Date:</span>
-                        </div>
-                        <div class="form-value">11/10/2025</div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">समय (Time):</span>
-                            <span class="english">Time:</span>
-                        </div>
-                        <div class="form-value">Not specified</div>
-                    </div>
-                </div>
+        <div class="preview-section" id="previewSection">
+            <h3>Preview:</h3>
+            <div class="photo-grid" id="photoGrid">
+                <!-- 5 photo cells will be generated here -->
             </div>
             
-            <div class="form-row">
-                <div class="form-label bilingual">
-                    <span class="hindi">घटना स्थल (Place of Occurrence):</span>
-                    <span class="english">Place of Occurrence:</span>
-                </div>
-                <div class="form-value">203 अटाला, थाना खुल्दाबाद / कुली बाजार, थाना कलेक्टर गंज, जिला कानपुर</div>
+            <div class="controls">
+                <button class="generate-btn" onclick="generatePDF()">🖨️ Generate Printable PDF</button>
+                <button class="reset-btn" onclick="resetApp()">🔄 Upload Different Photo</button>
             </div>
             
-            <div class="section-title">अपराध का विवरण (Description of Offence)</div>
-            <div class="offence-description">
-                प्रार्थी का निकाह 1/1/2016 को शाएका बेगम पुत्री कश्मीरूल हक निवासी 203 अटाला थाना खुल्दाबाद के साथ हुआ था । एक पुत्र का जन्म हुआ जो पत्नी के साथ रह रहा है। दिनांक 17/9/2017 को, पत्नी लड़ाई-झगड़ा कर के अपने मायके चली गयी और दबाव बनाने के लिए प्रार्थी के खिलाफ भरण पोषण घरेलू हिंसा का मुकदमा दायर किया है। इस बीच प्राथी द्वारा पत्नी को रजिस्टर्ड डाक के माध्यम से एक-एक माह के अंतराल में तलाक दे दिया है।
-                जिससे न्यायालय द्वारा डिग्री प्राप्त करने के बाद पत्नी न्यायालय में प्रस्तुत इस तलाक को नहीं मानती है। उसका कोई तलाक नहीं हुआ हैं। तलाक न होने के आधार पर न्यायालय द्वारा प्रार्थिनी द्वारा दिये गये तलाक के डिग्री को रीकॉल प्रपत्र कर दिया है, जिसमें पत्नी द्वारा जवाब दाखिल कर तलाकनामें से इन्कार कर दिया हैं। और प्रार्थी के साथ रहने को तैयार है। इस बीच मुकदमा के दौरा‌न पत्नी ने बगैर किसी तलाक के दिनांक - 22/8/2025 को अलतमस पुत्र स्वर्गी शकील निवासी जिला कानपुर के साथ निकाह कर लिया है जो एक अपराधिक व्यक्ति है। मेरी पत्नी का परिवार और अलतमस के परिवार वाले इस में सम्मिलित है।
-                अतः श्रीमान जी से निवेदन है कि प्रार्थी के बगैर किसी तलाक के दिनांक-22/8/2025 को निकाह करने के सम्बंध में निकाह में शरीक शाएका बेगम पुत्री कश्मीरुल हक, शफीका बेगम पत्नी कश्मीरुल हक, इनामुल हक उर्फ शेबू पुत्र कश्मीरल हक निवासी 203 अटाला खुल्दाबाद प्रयागराज। मेराज़ अहमद पुत्र स्वर्गी हसमतुल्लाह अटाला निवासी खुल्दाबाद तथा अलतमस पुत्र स्वर्गी शकील व उसके परिजन निवासी कुली बाज़ार थाना कलेक्टर गंज जिला कानपुर के विरुध्द न्यायोचित धाराओं में प्रथम सूचना रिपोर्ट दर्ज कर कार्यवाही करने की कृपा करें।
-                धन्यवाद।
+            <div class="print-tips">
+                <strong>Printing Tips:</strong>
+                <ul>
+                    <li>Use A4 paper for printing</li>
+                    <li>Set print margins to "None" or "Minimum" in printer settings</li>
+                    <li>Print at 100% scale (do not scale to fit)</li>
+                    <li>Use photo quality paper for best results</li>
+                </ul>
             </div>
         </div>
 
-        <!-- Complainant Details -->
-        <div class="form-section">
-            <div class="section-title">4. शिकायतकर्ता/सूचनादाता विवरण (Complainant/Informant Details)</div>
-            <div class="complainant-details">
-                <div class="two-column">
-                    <div class="column">
-                        <div class="form-row">
-                            <div class="form-label bilingual">
-                                <span class="hindi">नाम (Name):</span>
-                                <span class="english">Name:</span>
-                            </div>
-                            <div class="form-value">Mohammad Shadab</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label bilingual">
-                                <span class="hindi">पिता का नाम (Father's Name):</span>
-                                <span class="english">Father's Name:</span>
-                            </div>
-                            <div class="form-value">Inam</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label bilingual">
-                                <span class="hindi">जन्म तिथि (Date of Birth):</span>
-                                <span class="english">Date of Birth:</span>
-                            </div>
-                            <div class="form-value">28/07/1982</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label bilingual">
-                                <span class="hindi">मोबाइल नंबर (Mobile Number):</span>
-                                <span class="english">Mobile Number:</span>
-                            </div>
-                            <div class="form-value">7985129710</div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="form-row">
-                            <div class="form-label bilingual">
-                                <span class="hindi">यू.आई.डी. नंबर (UID No./Aadhaar):</span>
-                                <span class="english">UID No./Aadhaar:</span>
-                            </div>
-                            <div class="form-value">500955852120</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label bilingual">
-                                <span class="hindi">पासपोर्ट नंबर (Passport No.):</span>
-                                <span class="english">Passport No.:</span>
-                            </div>
-                            <div class="form-value"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label bilingual">
-                                <span class="hindi">पता (Address):</span>
-                                <span class="english">Address:</span>
-                            </div>
-                            <div class="form-value"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label bilingual">
-                                <span class="hindi">राष्ट्रीयता (Nationality):</span>
-                                <span class="english">Nationality:</span>
-                            </div>
-                            <div class="form-value">Indian</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Signatures Section -->
-        <div class="two-column">
-            <div class="column">
-                <div class="signature-area">
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">शिकायतकर्ता के हस्ताक्षर</span>
-                            <span class="english">Complainant's Signature</span>
-                        </div>
-                    </div>
-                    <div class="form-row" style="height: 50px;">
-                        <div class="form-value" style="border-bottom: 1px solid #000;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="officer-details">
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">थाना प्रभारी के हस्ताक्षर</span>
-                            <span class="english">Officer's Signature</span>
-                        </div>
-                    </div>
-                    <div class="form-row" style="height: 50px;">
-                        <div class="form-value" style="border-bottom: 1px solid #000;"></div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">नाम (Name):</span>
-                            <span class="english">Name:</span>
-                        </div>
-                        <div class="form-value">Roquent Laurét</div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">पद (Rank):</span>
-                            <span class="english">Rank:</span>
-                        </div>
-                        <div class="form-value">इंस्पेक्टर (Inspector)</div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-label bilingual">
-                            <span class="hindi">संख्या (No.):</span>
-                            <span class="english">No.:</span>
-                        </div>
-                        <div class="form-value">010869425</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer Note -->
-        <div style="text-align: center; margin-top: 15px; font-size: 11px; border-top: 1px solid #ccc; padding-top: 5px;">
-            <div class="bilingual">
-                <div class="hindi">नोट: यह फॉर्म एक ए4 पेज पर फिट होने के लिए डिज़ाइन किया गया है</div>
-                <div class="english">Note: This form is designed to fit on a single A4 page</div>
-            </div>
-        </div>
+        <div class="status" id="status"></div>
     </div>
+
+    <script>
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+
+        // DOM elements
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const previewSection = document.getElementById('previewSection');
+        const photoGrid = document.getElementById('photoGrid');
+        const status = document.getElementById('status');
+
+        // Create 5 photo cells
+        for (let i = 0; i < 5; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'photo-cell';
+            cell.id = `photoCell${i}`;
+            photoGrid.appendChild(cell);
+        }
+
+        // File input change handler
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                handleImageUpload(this.files[0]);
+            }
+        });
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+
+        uploadArea.addEventListener('dragleave', function() {
+            uploadArea.classList.remove('drag-over');
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleImageUpload(e.dataTransfer.files[0]);
+            }
+        });
+
+        function handleImageUpload(file) {
+            if (!file.type.match('image.*')) {
+                status.textContent = 'Please upload an image file (JPEG, PNG, etc.)';
+                return;
+            }
+
+            status.textContent = 'Processing image...';
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Display preview in all 5 cells
+                    for (let i = 0; i < 5; i++) {
+                        const cell = document.getElementById(`photoCell${i}`);
+                        cell.innerHTML = '';
+                        const previewImg = document.createElement('img');
+                        previewImg.src = e.target.result;
+                        cell.appendChild(previewImg);
+                    }
+                    
+                    // Show preview section
+                    previewSection.style.display = 'block';
+                    status.textContent = 'Photo loaded successfully! Click "Generate Printable PDF" when ready.';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function generatePDF() {
+            status.textContent = 'Generating PDF... This may take a few seconds.';
+
+            // Use html2canvas to capture the photo grid
+            html2canvas(photoGrid, {
+                scale: 3, // Higher scale for better quality
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                // Create PDF in A4 format
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                
+                // Calculate dimensions for 5 photos in one row
+                const photoWidth = 35; // 3.5cm = 35mm
+                const photoHeight = 45; // 4.5cm = 45mm
+                const totalRowWidth = 5 * photoWidth; // 175mm
+                
+                // Center the row horizontally
+                const startX = (pdfWidth - totalRowWidth) / 2;
+                // Position vertically in the middle
+                const startY = (pdfHeight - photoHeight) / 2;
+
+                // Convert canvas to image data
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+                // Add the image to PDF
+                pdf.addImage(imgData, 'JPEG', startX, startY, totalRowWidth, photoHeight);
+
+                // Add some helpful text
+                pdf.setFontSize(10);
+                pdf.setTextColor(100);
+                pdf.text('Passport Photos - 3.5cm × 4.5cm - Cut along the lines', pdfWidth / 2, startY + photoHeight + 10, { align: 'center' });
+                pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, pdfWidth / 2, startY + photoHeight + 15, { align: 'center' });
+
+                // Save the PDF
+                pdf.save('passport-photos-5-in-row.pdf');
+                
+                status.textContent = 'PDF generated successfully! Check your downloads folder.';
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                status.textContent = 'Error generating PDF. Please try again.';
+            });
+        }
+
+        function resetApp() {
+            fileInput.value = '';
+            previewSection.style.display = 'none';
+            status.textContent = '';
+            
+            // Clear all photo cells
+            for (let i = 0; i < 5; i++) {
+                const cell = document.getElementById(`photoCell${i}`);
+                cell.innerHTML = '';
+            }
+        }
+
+        // Initial instructions
+        status.textContent = 'Please upload your passport photo to begin.';
+    </script>
 </body>
 </html>
