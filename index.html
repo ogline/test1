@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passport Photo Printer - 5 in a Row</title>
+    <title>Passport Photo Printer - 6 in a Row</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,7 +59,7 @@
         .photo-grid {
             display: flex;
             justify-content: center;
-            gap: 0;
+            gap: 1mm; /* Smaller gap for 6 photos */
             margin: 20px 0;
             background: white;
             padding: 10px;
@@ -110,20 +109,6 @@
         .reset-btn:hover {
             background: #f57c00;
         }
-        .instructions {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        .print-tips {
-            background: #fff8e1;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-            font-size: 14px;
-        }
         .status {
             text-align: center;
             margin: 10px 0;
@@ -134,18 +119,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>📷 Passport Photo Generator</h1>
-        <p style="text-align: center; color: #666;">Upload your photo to generate a PDF with 5 passport photos (3.5cm × 4.5cm) in one row</p>
+        <h1>📷 Passport Photo Generator - 6 in a Row</h1>
         
-        <div class="instructions">
-            <strong>Instructions:</strong>
-            <ul>
-                <li>Upload a clear, front-facing photo with a plain background</li>
-                <li>Recommended: High-quality image for best results</li>
-                <li>The generated PDF will have 5 identical photos in one row</li>
-            </ul>
-        </div>
-
         <div class="upload-section" id="uploadArea">
             <input type="file" id="fileInput" accept="image/*">
             <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
@@ -157,22 +132,12 @@
         <div class="preview-section" id="previewSection">
             <h3>Preview:</h3>
             <div class="photo-grid" id="photoGrid">
-                <!-- 5 photo cells will be generated here -->
+                <!-- 6 photo cells will be generated here -->
             </div>
             
             <div class="controls">
                 <button class="generate-btn" onclick="generatePDF()">🖨️ Generate Printable PDF</button>
                 <button class="reset-btn" onclick="resetApp()">🔄 Upload Different Photo</button>
-            </div>
-            
-            <div class="print-tips">
-                <strong>Printing Tips:</strong>
-                <ul>
-                    <li>Use A4 paper for printing</li>
-                    <li>Set print margins to "None" or "Minimum" in printer settings</li>
-                    <li>Print at 100% scale (do not scale to fit)</li>
-                    <li>Use photo quality paper for best results</li>
-                </ul>
             </div>
         </div>
 
@@ -190,8 +155,10 @@
         const photoGrid = document.getElementById('photoGrid');
         const status = document.getElementById('status');
 
-        // Create 5 photo cells
-        for (let i = 0; i < 5; i++) {
+        let currentImageData = null;
+
+        // Create 6 photo cells for preview
+        for (let i = 0; i < 6; i++) {
             const cell = document.createElement('div');
             cell.className = 'photo-cell';
             cell.id = `photoCell${i}`;
@@ -234,14 +201,16 @@
 
             const reader = new FileReader();
             reader.onload = function(e) {
+                currentImageData = e.target.result;
+                
                 const img = new Image();
                 img.onload = function() {
-                    // Display preview in all 5 cells
-                    for (let i = 0; i < 5; i++) {
+                    // Display preview in all 6 cells
+                    for (let i = 0; i < 6; i++) {
                         const cell = document.getElementById(`photoCell${i}`);
                         cell.innerHTML = '';
                         const previewImg = document.createElement('img');
-                        previewImg.src = e.target.result;
+                        previewImg.src = currentImageData;
                         cell.appendChild(previewImg);
                     }
                     
@@ -249,69 +218,92 @@
                     previewSection.style.display = 'block';
                     status.textContent = 'Photo loaded successfully! Click "Generate Printable PDF" when ready.';
                 };
-                img.src = e.target.result;
+                img.src = currentImageData;
             };
             reader.readAsDataURL(file);
         }
 
         function generatePDF() {
-            status.textContent = 'Generating PDF... This may take a few seconds.';
+            if (!currentImageData) {
+                status.textContent = 'Please upload a photo first.';
+                return;
+            }
 
-            // Use html2canvas to capture the photo grid
-            html2canvas(photoGrid, {
-                scale: 3, // Higher scale for better quality
-                useCORS: true,
-                logging: false
-            }).then(canvas => {
-                // Create PDF in A4 format
-                const pdf = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a4'
-                });
+            status.textContent = 'Generating PDF...';
 
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-                
-                // Calculate dimensions for 5 photos in one row
-                const photoWidth = 35; // 3.5cm = 35mm
-                const photoHeight = 45; // 4.5cm = 45mm
-                const totalRowWidth = 5 * photoWidth; // 175mm
-                
-                // Center the row horizontally
-                const startX = (pdfWidth - totalRowWidth) / 2;
-                // Position vertically in the middle
-                const startY = (pdfHeight - photoHeight) / 2;
-
-                // Convert canvas to image data
-                const imgData = canvas.toDataURL('image/jpeg', 0.95);
-
-                // Add the image to PDF
-                pdf.addImage(imgData, 'JPEG', startX, startY, totalRowWidth, photoHeight);
-
-                // Add some helpful text
-                pdf.setFontSize(10);
-                pdf.setTextColor(100);
-                pdf.text('Passport Photos - 3.5cm × 4.5cm - Cut along the lines', pdfWidth / 2, startY + photoHeight + 10, { align: 'center' });
-                pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, pdfWidth / 2, startY + photoHeight + 15, { align: 'center' });
-
-                // Save the PDF
-                pdf.save('passport-photos-5-in-row.pdf');
-                
-                status.textContent = 'PDF generated successfully! Check your downloads folder.';
-            }).catch(error => {
-                console.error('Error generating PDF:', error);
-                status.textContent = 'Error generating PDF. Please try again.';
+            // Create PDF in A4 format
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
             });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
+            const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
+            
+            // Exact passport photo dimensions
+            const photoWidth = 35; // 3.5cm = 35mm
+            const photoHeight = 45; // 4.5cm = 45mm
+            
+            // Add minimal gap between photos (0.5mm gap for 6 photos)
+            const gap = 0.5; // 0.5mm gap between photos
+            
+            // Calculate total width for 6 photos + 5 gaps
+            const totalRowWidth = (6 * photoWidth) + (5 * gap); // 210mm + 2.5mm = 212.5mm
+            
+            // Since 212.5mm > 210mm (A4 width), we need to adjust
+            // Let's calculate the maximum possible photo width that fits
+            const maxPhotoWidth = (pdfWidth - (5 * gap)) / 6;
+            
+            // Use the maximum possible width while maintaining aspect ratio
+            const adjustedPhotoWidth = maxPhotoWidth;
+            const adjustedPhotoHeight = (adjustedPhotoWidth * photoHeight) / photoWidth; // Maintain aspect ratio
+
+            // Calculate minimal margins - centered horizontally
+            const totalAdjustedWidth = (6 * adjustedPhotoWidth) + (5 * gap);
+            const leftRightMargin = (pdfWidth - totalAdjustedWidth) / 2;
+            
+            // Position at the VERY TOP of the page (0.5mm from top - absolute minimum)
+            const startY = 0.5;
+
+            // Load the image and add it 6 times to the PDF with gaps
+            const img = new Image();
+            img.onload = function() {
+                // Add 6 photos in a single row with minimal gaps
+                for (let i = 0; i < 6; i++) {
+                    const xPos = leftRightMargin + (i * (adjustedPhotoWidth + gap));
+                    
+                    // Add the image to PDF at adjusted size
+                    pdf.addImage(
+                        currentImageData, 
+                        'JPEG', 
+                        xPos, 
+                        startY, 
+                        adjustedPhotoWidth, 
+                        adjustedPhotoHeight
+                    );
+                }
+                
+                // Save the PDF
+                pdf.save('passport-photos-6-in-row.pdf');
+                status.textContent = 'PDF generated successfully! Check your downloads folder.';
+            };
+            
+            img.onerror = function() {
+                status.textContent = 'Error loading image. Please try again.';
+            };
+            
+            img.src = currentImageData;
         }
 
         function resetApp() {
             fileInput.value = '';
             previewSection.style.display = 'none';
             status.textContent = '';
+            currentImageData = null;
             
             // Clear all photo cells
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
                 const cell = document.getElementById(`photoCell${i}`);
                 cell.innerHTML = '';
             }
